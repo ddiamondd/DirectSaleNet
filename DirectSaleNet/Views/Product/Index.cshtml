@@ -1,0 +1,71 @@
+﻿@model IEnumerable<DirectSaleNet.Models.Product> //声明视图模型
+
+@{
+    ViewData["Title"] = "商品列表";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">添加商品</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Spec)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ManufactorId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Brand)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockQuantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Spec)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ManufactorId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ProductId">编辑</a> |
+                <a asp-action="Details" asp-route-id="@item.ProductId">查看详情</a> |
+                <a asp-action="Delete" asp-route-id="@item.ProductId">删除</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
