@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DirectSaleNet.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,35 +37,59 @@ namespace DirectSaleNet.Controllers
         // POST: Product/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(IFormCollection collection)//根据 表单信息保存
         {
             try
             {
-                // TODO: Add insert logic here
+                Product product = new Product();
+                product.ProductName = collection["ProductName"];
+                product.Brand = collection["Brand"];
+                product.StockQuantity = int.Parse(collection["StockQuantity"]);
+                product.Price = decimal.Parse(collection["Price"]);
+                product.Spec = collection["Spec"];
+                product.Description = collection["Description"];
+                product.ManufactorId = int.Parse(collection["ManufactorId"]);
 
-                return RedirectToAction(nameof(Index));
+                //然后把商品添加到商品集合中去
+                _context.Product.Add(product);
+
+                //保存到数据库
+                _context.SaveChanges();  //自动生成insert 语句
+
+
+                return RedirectToAction(nameof(Index));  //如果保存成功的话 跳转到商品列表
             }
             catch
             {
-                return View();
+                return View(); //不成功的话 返回列表页面
             }
         }
 
         // GET: Product/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id)  //编辑的时候  首先要把商品原来的信息返回去  在此基础上做修改  
         {
-            return View();
+            return View(_context.Product.Find(id)); //根据id查找商品
         }
 
         // POST: Product/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, IFormCollection collection)  //这是保存的时候
         {
             try
             {
                 // TODO: Add update logic here
+                Product product = _context.Product.Find(id); //修改原来的值
+                product.ProductName = collection["ProductName"];
+                product.Brand = collection["Brand"];
+                product.StockQuantity = int.Parse(collection["StockQuantity"]);
+                product.Price = decimal.Parse(collection["Price"]);
+                product.Spec = collection["Spec"];
+                product.Description = collection["Description"];
+                product.ManufactorId = int.Parse(collection["ManufactorId"]);
 
+                //保存到数据库
+                _context.SaveChanges();  //自动生成insert 语句
                 return RedirectToAction(nameof(Index));
             }
             catch
