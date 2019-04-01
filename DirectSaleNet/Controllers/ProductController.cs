@@ -24,7 +24,7 @@ namespace DirectSaleNet.Controllers
         // GET: Product/Details/5
         public ActionResult Details(int id)  //根据主键 获取明细信息
         {
-            return View();
+            return View(_context.Product.Find(id));
         }
 
         // GET: Product/Create    
@@ -39,6 +39,12 @@ namespace DirectSaleNet.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)//根据 表单信息保存
         {
+            //Product product = new Product();
+            //PRopertyInfo[] propertyInfo = typeof(Product).GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags)
+            //foreach(PropertyInfo p in propertyInfo)
+            //{
+
+            //}
             try
             {
                 Product product = new Product();
@@ -101,7 +107,7 @@ namespace DirectSaleNet.Controllers
         // GET: Product/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return View(_context.Product.Find(id));
         }
 
         // POST: Product/Delete/5
@@ -112,7 +118,13 @@ namespace DirectSaleNet.Controllers
             try
             {
                 // TODO: Add delete logic here
-
+                Product product = _context.Product.Find(id); //先找到原来的值
+                
+                if(product != null)
+                {
+                    _context.Product.Remove(product);  //标识这个数据要被删除 在数据库中还未删除
+                    _context.SaveChanges();
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
